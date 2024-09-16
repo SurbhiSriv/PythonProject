@@ -1,0 +1,53 @@
+import sys
+import base64
+import re
+
+# Simple XOR cipher for encryption and decryption
+def xor_cipher(data, key):
+    return bytes([b ^ key for b in data])
+
+# Encode the data using base64
+def base64_encode(data):
+    return base64.b64encode(data).decode()
+
+# Decode the data from base64
+def base64_decode(data):
+    return base64.b64decode(data)
+
+# Encrypt the Reference ID
+def encrypt_reference_id(reference_id, key):
+    encrypted_data = xor_cipher(reference_id.encode(), key)
+    encoded_data = base64_encode(encrypted_data)
+    return encoded_data
+
+# Validate Reference ID
+def validate_reference_id(reference_id):
+    if len(reference_id) != 12:
+        return False
+    if not re.match(r'^[a-zA-Z0-9]+$', reference_id):
+        return False
+    return True
+
+def main():
+    if len(sys.argv) != 2:
+        print("Usage: python script.py <ReferenceID>")
+        sys.exit(1)
+
+    reference_id = sys.argv[1]
+
+    # Validate Reference ID
+    if not validate_reference_id(reference_id):
+        print("Invalid Reference ID. It should be 12 alphanumeric characters.")
+        sys.exit(1)
+
+    # Define a simple key for the XOR cipher
+    key = 123  # You can choose any integer value as a key
+
+    # Encrypt the Reference ID
+    encrypted_id = encrypt_reference_id(reference_id, key)
+
+    # Print the encrypted Reference ID
+    print(f"Encrypted Reference ID: {encrypted_id}")
+
+if __name__ == "__main__":
+    main()
