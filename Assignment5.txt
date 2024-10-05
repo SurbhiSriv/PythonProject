@@ -1,0 +1,1831 @@
+Assignment 5
+
+1. Write a Python script to display the various Date Time formats -
+a) Current date and time
+b) Current year
+c) Month of year
+d) Week number of the year
+e) Weekday of the week
+f) Day of year
+g) Day of the month
+h) Day of week
+
+
+
+solution
+
+from datetime import datetime
+
+# Get the current date and time
+now = datetime.now()
+
+# a) Current date and time
+print("Current date and time:", now)
+
+# b) Current year
+print("Current year:", now.year)
+
+# c) Month of year
+print("Month of year:", now.strftime("%B"))  # Full month name
+# Alternatively, you can get the month as a number with: now.month
+
+# d) Week number of the year
+print("Week number of the year:", now.strftime("%U"))  # Week starts from Sunday
+# Alternatively, you can use "%W" if you want Monday as the start of the week.
+
+# e) Weekday of the week
+print("Weekday of the week:", now.strftime("%A"))  # Full weekday name
+
+# f) Day of year
+print("Day of year:", now.strftime("%j"))  # Day number in the year (001-366)
+
+# g) Day of the month
+print("Day of the month:", now.day)
+
+# h) Day of week
+print("Day of the week (number):", now.strftime("%w"))  # 0 is Sunday, 6 is Saturday
+
+
+
+2. Write a Python program to determine whether a given year is a leap year
+
+Solution
+
+def is_leap_year(year):
+    # Check if the year is divisible by 4
+    if (year % 4 == 0):
+        # If divisible by 100, it must also be divisible by 400 to be a leap year
+        if (year % 100 == 0):
+            if (year % 400 == 0):
+                return True
+            else:
+                return False
+        else:
+            return True
+    else:
+        return False
+
+# Input from the user
+year = int(input("Enter a year: "))
+
+# Check if it's a leap year
+if is_leap_year(year):
+    print(f"{year} is a leap year.")
+else:
+    print(f"{year} is not a leap year.")
+
+
+3. Write a Python program to convert a string to datetime.
+Sample String : Jul 1 2014 2:43PM
+Expected Output : 2014-07-01 14:43:00
+
+Solution
+
+from datetime import datetime
+
+# Sample string
+date_string = "Jul 1 2014 2:43PM"
+
+# Convert string to datetime object
+date_object = datetime.strptime(date_string, '%b %d %Y %I:%M%p')
+
+# Print the datetime in the expected format
+formatted_date = date_object.strftime('%Y-%m-%d %H:%M:%S')
+print("Converted datetime:", formatted_date)
+
+
+4. Write a Python program to get the current time in Python.
+Sample Format : 13:19:49.078205
+
+Solution
+
+from datetime import datetime
+
+# Get the current time
+current_time = datetime.now().time()
+
+# Print the current time in the specified format
+print("Current time:", current_time)
+
+
+5. Write a Python program to subtract five days from the current date.
+Sample Date :
+Current Date : 2015-06-22
+5 days before Current Date : 2015-06-17
+
+
+Solution
+from datetime import datetime, timedelta
+
+# Get the current date
+current_date = datetime.now().date()
+
+# Subtract 5 days from the current date
+five_days_before = current_date - timedelta(days=5)
+
+# Print the results
+print("Current Date:", current_date)
+print("5 days before Current Date:", five_days_before)
+
+
+
+6. Write a Python program to convert a Unix timestamp string to a readable date.
+Sample Unix timestamp string : 1284105682
+Expected Output : 2010-09-10 13:31:22
+
+Solution
+
+from datetime import datetime
+
+# Sample Unix timestamp string
+timestamp = 1284105682
+
+# Convert the Unix timestamp to a datetime object
+readable_date = datetime.fromtimestamp(timestamp)
+
+# Format the datetime object to a readable string
+formatted_date = readable_date.strftime('%Y-%m-%d %H:%M:%S')
+
+# Print the result
+print("Readable date:", formatted_date)
+
+
+7. Write a Python program to print yesterday, today, tomorrow
+
+Solution
+from datetime import datetime, timedelta
+
+# Get today's date
+today = datetime.now().date()
+
+# Calculate yesterday and tomorrow
+yesterday = today - timedelta(days=1)
+tomorrow = today + timedelta(days=1)
+
+# Print the results
+print("Yesterday:", yesterday)
+print("Today:", today)
+print("Tomorrow:", tomorrow)
+
+
+8. Write a Python program to convert the date to datetime (midnight of the date) in Python.
+Sample Output : 2015-06-22 00:00:00
+
+Solution
+
+from datetime import datetime
+
+# Sample date as a string
+date_string = "2015-06-22"
+
+# Convert the date string to a datetime object with time set to midnight
+date_object = datetime.strptime(date_string, "%Y-%m-%d")
+
+# Print the datetime object
+print("Datetime at midnight:", date_object)
+
+
+9. Write a Python program to print the next 5 days starting today.
+
+Solution
+
+from datetime import datetime, timedelta
+
+# Get today's date
+today = datetime.now().date()
+
+# Print the next 5 days starting today
+print("Next 5 days starting today:")
+for i in range(5):
+    next_day = today + timedelta(days=i)
+    print(next_day)
+
+
+10. Write a Python program to add 5 seconds to the current time.
+Sample Data :
+13:28:32.953088
+13:28:37.953088
+
+Solution
+
+from datetime import datetime, timedelta
+
+# Get the current time
+current_time = datetime.now().time()
+
+# Print the current time
+print("Current Time:", current_time)
+
+# Convert the current time to a datetime object for manipulation
+current_datetime = datetime.combine(datetime.today(), current_time)
+
+# Add 5 seconds to the current time
+new_time = current_datetime + timedelta(seconds=5)
+
+# Print the new time
+print("New Time (after adding 5 seconds):", new_time.time())
+
+
+11. Write a Python program to convert Year/Month/Day to Day of Year in Python.
+
+Solution
+
+from datetime import datetime
+
+# Sample date input
+date_string = "2024/09/29"  # Format: Year/Month/Day
+
+# Convert the date string to a datetime object
+date_object = datetime.strptime(date_string, "%Y/%m/%d")
+
+# Get the day of the year
+day_of_year = date_object.timetuple().tm_yday
+
+# Print the result
+print(f"The date {date_string} is the {day_of_year} day of the year.")
+
+
+12. Write a Python program to get the current time in milliseconds in Python.
+
+Solution
+
+import time
+
+# Get the current time in seconds since the epoch
+current_time_seconds = time.time()
+
+# Convert to milliseconds
+current_time_milliseconds = int(current_time_seconds * 1000)
+
+# Print the result
+print("Current time in milliseconds:", current_time_milliseconds)
+
+
+13. Write a Python program to get the week number.
+Sample Date : 2015, 6, 16
+Expected Output : 25
+
+Solution
+
+from datetime import datetime
+
+# Sample date
+sample_date = datetime(2015, 6, 16)
+
+# Get the week number of the year
+week_number = sample_date.isocalendar()[1]
+
+# Print the result
+print("Sample Date:", sample_date.strftime("%Y-%m-%d"))
+print("Week Number:", week_number)
+
+
+14. Write a Python program to find the date of the first Monday of a given week.
+Sample Year and week : 2015, 50
+Expected Output : Mon Dec 14 00:00:00 2015
+
+
+Solution
+
+from datetime import datetime, timedelta
+
+# Sample year and week
+year = 2015
+week = 50
+
+# Calculate the first day of the specified week (Monday)
+first_monday = datetime.strptime(f'{year}-W{week}-1', '%G-W%V-%u')
+
+# Print the result
+print("First Monday of the given week:", first_monday.strftime('%a %b %d %H:%M:%S %Y'))
+
+
+15. Write a Python program to select all the Sundays in a specified year
+
+Solution
+from datetime import datetime, timedelta
+
+# Function to find all Sundays in a specified year
+def find_sundays(year):
+    # Start from January 1st of the specified year
+    date = datetime(year, 1, 1)
+    # List to store all Sundays
+    sundays = []
+
+    # Loop through all days of the year
+    while date.year == year:
+        # Check if the current day is a Sunday (weekday() returns 6 for Sunday)
+        if date.weekday() == 6:
+            sundays.append(date)
+        # Move to the next day
+        date += timedelta(days=1)
+
+    return sundays
+
+# Specify the year
+specified_year = 2024
+
+# Get all Sundays in the specified year
+sundays_in_year = find_sundays(specified_year)
+
+# Print the results
+print(f"All Sundays in the year {specified_year}:")
+for sunday in sundays_in_year:
+    print(sunday.strftime("%Y-%m-%d"))
+
+
+16. Write a Python program to add year(s) to a given date and display the updated date.
+Sample Data : (addYears is the user defined function name)
+print(addYears(datetime.date(2015,1,1), -1))
+print(addYears(datetime.date(2015,1,1), 0))
+print(addYears(datetime.date(2015,1,1), 2))
+print(addYears(datetime.date(2000,2,29),1))
+Expected Output :
+2014-01-01
+2015-01-01
+2017-01-01
+2001-03-01
+
+
+Solution
+
+import datetime
+
+# User-defined function to add years to a given date
+def addYears(original_date, years):
+    # Calculate the new year
+    new_year = original_date.year + years
+    
+    # Handle leap year case for February 29
+    try:
+        updated_date = original_date.replace(year=new_year)
+    except ValueError:
+        # If the original date is February 29 and the new year is not a leap year
+        updated_date = original_date.replace(year=new_year, day=1) + datetime.timedelta(days=1)
+    
+    return updated_date
+
+# Sample data
+print(addYears(datetime.date(2015, 1, 1), -1))  # 2014-01-01
+print(addYears(datetime.date(2015, 1, 1), 0))   # 2015-01-01
+print(addYears(datetime.date(2015, 1, 1), 2))   # 2017-01-01
+print(addYears(datetime.date(2000, 2, 29), 1))  # 2001-03-01
+
+
+17. Write a Python program to drop microseconds from datetime.
+
+Solution
+
+from datetime import datetime
+
+# Sample datetime with microseconds
+sample_datetime = datetime.now()
+
+# Print the original datetime with microseconds
+print("Original datetime with microseconds:", sample_datetime)
+
+# Drop microseconds
+datetime_without_microseconds = sample_datetime.replace(microsecond=0)
+
+# Print the updated datetime without microseconds
+print("Datetime without microseconds:", datetime_without_microseconds)
+
+
+18. Write a Python program to get days between two dates.
+Sample Dates : 2000,2,28, 2001,2,28
+Expected Output : 366 days, 0:00:00
+
+Solution
+
+from datetime import datetime
+
+# Sample dates
+date1 = datetime(2000, 2, 28)
+date2 = datetime(2001, 2, 28)
+
+# Calculate the difference between the two dates
+difference = date2 - date1
+
+# Print the result
+print(f"Days between {date1.date()} and {date2.date()}: {difference}")
+
+
+19. Write a Python program to get the date of the last Tuesday
+
+Solution
+
+from datetime import datetime, timedelta
+
+# Get today's date
+today = datetime.now()
+
+# Calculate how many days to subtract to get to the last Tuesday
+days_since_tuesday = (today.weekday() - 1) % 7  # 0 is Monday, 1 is Tuesday
+
+# Get the date of the last Tuesday
+last_tuesday = today - timedelta(days=days_since_tuesday)
+
+# Print the result
+print("Today's Date:", today.strftime('%Y-%m-%d'))
+print("Last Tuesday's Date:", last_tuesday.strftime('%Y-%m-%d'))
+
+
+20. Write a Python program to test the third Tuesday of a month.
+
+Solution
+
+from datetime import datetime, timedelta
+
+def is_third_tuesday(year, month, day):
+    # Create a date object for the given day
+    date_to_check = datetime(year, month, day)
+    
+    # Check if the date is a Tuesday (weekday() returns 1 for Tuesday)
+    if date_to_check.weekday() != 1:  # 1 corresponds to Tuesday
+        return False
+    
+    # Calculate the first day of the month
+    first_of_month = datetime(year, month, 1)
+    
+    # Find the first Tuesday of the month
+    first_tuesday = first_of_month + timedelta(days=(1 - first_of_month.weekday() + 7) % 7)
+    
+    # Calculate the third Tuesday
+    third_tuesday = first_tuesday + timedelta(weeks=2)
+    
+    # Return whether the given date is the third Tuesday
+    return date_to_check == third_tuesday
+
+# Test the function
+year = 2024
+month = 10
+day = 15  # Change this date to test different days
+
+if is_third_tuesday(year, month, day):
+    print(f"{year}-{month:02d}-{day:02d} is the third Tuesday of the month.")
+else:
+    print(f"{year}-{month:02d}-{day:02d} is NOT the third Tuesday of the month.")
+
+
+21. Write a Python program to get the last day of a specified year and month.
+
+Solution
+
+from datetime import datetime, timedelta
+
+def last_day_of_month(year, month):
+    # Create a date object for the first day of the next month
+    if month == 12:
+        # If December, go to the first day of the next year
+        next_month = datetime(year + 1, 1, 1)
+    else:
+        # Otherwise, just go to the first day of the next month
+        next_month = datetime(year, month + 1, 1)
+
+    # The last day of the current month is one day before the first day of the next month
+    last_day = next_month - timedelta(days=1)
+
+    return last_day
+
+# Specify the year and month
+year = 2024
+month = 2  # February
+
+# Get the last day of the specified year and month
+last_day = last_day_of_month(year, month)
+
+# Print the result
+print(f"The last day of {month}/{year} is {last_day.strftime('%Y-%m-%d')}.")
+
+
+22. Write a Python program to get the number of days in a given month and year
+
+Solution
+
+from calendar import monthrange
+
+def days_in_month(year, month):
+    # Get the number of days in the specified month and year
+    return monthrange(year, month)[1]
+
+# Specify the year and month
+year = 2024
+month = 2  # February
+
+# Get the number of days in the specified month and year
+num_days = days_in_month(year, month)
+
+# Print the result
+print(f"The number of days in {month}/{year} is {num_days}.")
+
+
+23. Write a Python program to add a month to a specified date.
+
+Solution
+
+from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
+
+def add_month(date):
+    # Use relativedelta to add one month to the date
+    return date + relativedelta(months=1)
+
+# Specify the date
+specified_date = datetime(2024, 1, 31)  # Change this date as needed
+
+# Add a month to the specified date
+new_date = add_month(specified_date)
+
+# Print the results
+print(f"Original Date: {specified_date.strftime('%Y-%m-%d')}")
+print(f"New Date after adding one month: {new_date.strftime('%Y-%m-%d')}")
+
+
+24. Write a Python program to count the number of Mondays on the 1st day of the month from 2015
+to 2016.
+
+Solution
+
+from datetime import datetime
+
+def count_mondays_on_first(start_year, end_year):
+    monday_count = 0
+    
+    # Loop through each month of each year in the specified range
+    for year in range(start_year, end_year + 1):
+        for month in range(1, 13):  # Months from January (1) to December (12)
+            # Create a date object for the 1st day of the month
+            first_day = datetime(year, month, 1)
+            
+            # Check if the first day of the month is a Monday (weekday() returns 0 for Monday)
+            if first_day.weekday() == 0:
+                monday_count += 1
+                
+    return monday_count
+
+# Specify the range of years
+start_year = 2015
+end_year = 2016
+
+# Get the count of Mondays on the 1st of the month
+count = count_mondays_on_first(start_year, end_year)
+
+# Print the result
+print(f"Number of Mondays on the 1st day of the month from {start_year} to {end_year}: {count}")
+
+
+25. Write a Python program to print a string five times, with a delay of three seconds.
+
+Solution
+
+import time
+
+# Specify the string to print
+string_to_print = "Hello, World!"
+
+# Loop to print the string five times
+for _ in range(5):
+    print(string_to_print)
+    time.sleep(3)  # Delay for 3 seconds
+
+
+26. Write a Python program that calculates the date six months from the current date using the
+datetime module.
+
+Solution
+
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
+
+# Get the current date
+current_date = datetime.now()
+
+# Calculate the date six months from now
+date_six_months_later = current_date + relativedelta(months=6)
+
+# Print the results
+print(f"Current Date: {current_date.strftime('%Y-%m-%d')}")
+print(f"Date six months from now: {date_six_months_later.strftime('%Y-%m-%d')}")
+
+
+27. Write a Python program to create 12 fixed dates from a specified date over a given period. The
+difference between two dates is 20.
+
+Solution
+
+from datetime import datetime, timedelta
+
+def generate_fixed_dates(start_date, num_dates, interval_days):
+    # Create a list to hold the generated dates
+    dates = []
+    
+    # Generate dates with the specified interval
+    for i in range(num_dates):
+        new_date = start_date + timedelta(days=i * interval_days)
+        dates.append(new_date)
+        
+    return dates
+
+# Specify the start date
+start_date = datetime(2024, 1, 1)  # Change this date as needed
+
+# Number of dates to generate
+num_dates = 12
+
+# Interval in days
+interval_days = 20
+
+# Generate the fixed dates
+fixed_dates = generate_fixed_dates(start_date, num_dates, interval_days)
+
+# Print the results
+for date in fixed_dates:
+    print(date.strftime('%Y-%m-%d'))
+
+
+28. Write a Python program to get the dates 30 days before and after today.
+
+Solution
+
+from datetime import datetime, timedelta
+
+# Get today's date
+today = datetime.now()
+
+# Calculate the date 30 days before today
+thirty_days_before = today - timedelta(days=30)
+
+# Calculate the date 30 days after today
+thirty_days_after = today + timedelta(days=30)
+
+# Print the results
+print(f"Today's Date: {today.strftime('%Y-%m-%d')}")
+print(f"Date 30 days before: {thirty_days_before.strftime('%Y-%m-%d')}")
+print(f"Date 30 days after: {thirty_days_after.strftime('%Y-%m-%d')}")
+
+
+29. Write a Python program to get GMT and the local time.
+
+Solution
+
+from datetime import datetime, timezone, timedelta
+
+# Get the current local time
+local_time = datetime.now()
+
+# Get the current GMT (UTC) time
+gmt_time = datetime.now(timezone.utc)
+
+# Print the results
+print("Local Time:", local_time.strftime('%Y-%m-%d %H:%M:%S'))
+print("GMT (UTC) Time:", gmt_time.strftime('%Y-%m-%d %H:%M:%S'))
+
+
+30. Write a Python program to convert a date to a timestamp.
+
+Solution
+
+from datetime import datetime
+
+def date_to_timestamp(date_str):
+    # Define the format for the input date string
+    date_format = '%Y-%m-%d %H:%M:%S'
+    
+    # Convert the date string to a datetime object
+    date_object = datetime.strptime(date_str, date_format)
+    
+    # Get the timestamp from the datetime object
+    timestamp = int(date_object.timestamp())
+    
+    return timestamp
+
+# Specify the date to convert
+date_str = '2024-09-29 15:30:00'  # Change this date as needed
+
+# Convert the date to a timestamp
+timestamp = date_to_timestamp(date_str)
+
+# Print the result
+print(f"Date: {date_str}")
+print(f"Timestamp: {timestamp}")
+
+
+31. Write a Python program to convert a string date to a timestamp.
+
+Solution
+
+from datetime import datetime
+
+def string_date_to_timestamp(date_str, date_format='%Y-%m-%d %H:%M:%S'):
+    # Convert the string date to a datetime object
+    date_object = datetime.strptime(date_str, date_format)
+    
+    # Get the timestamp from the datetime object
+    timestamp = int(date_object.timestamp())
+    
+    return timestamp
+
+# Specify the string date to convert
+date_str = '2024-09-29 15:30:00'  # Change this date as needed
+
+# Convert the string date to a timestamp
+timestamp = string_date_to_timestamp(date_str)
+
+# Print the result
+print(f"String Date: {date_str}")
+print(f"Timestamp: {timestamp}")
+
+32. Write a Python program to calculate the number of days between two dates
+
+Solution
+
+from datetime import datetime
+
+def days_between_dates(date_str1, date_str2, date_format='%Y-%m-%d'):
+    # Convert the string dates to datetime objects
+    date1 = datetime.strptime(date_str1, date_format)
+    date2 = datetime.strptime(date_str2, date_format)
+    
+    # Calculate the difference in days
+    difference = abs((date2 - date1).days)
+    
+    return difference
+
+# Specify the two dates
+date1 = '2024-09-29'  # Change this date as needed
+date2 = '2025-10-29'  # Change this date as needed
+
+# Calculate the number of days between the two dates
+number_of_days = days_between_dates(date1, date2)
+
+# Print the result
+print(f"Number of days between {date1} and {date2}: {number_of_days} days")
+
+
+33. Write a Python program to calculate the number of days between two date times.
+
+Solution
+
+from datetime import datetime
+
+def days_between_date_times(date_time_str1, date_time_str2, date_format='%Y-%m-%d %H:%M:%S'):
+    # Convert the string date-times to datetime objects
+    date_time1 = datetime.strptime(date_time_str1, date_format)
+    date_time2 = datetime.strptime(date_time_str2, date_format)
+    
+    # Calculate the difference in days
+    difference = abs((date_time2 - date_time1).days)
+    
+    return difference
+
+# Specify the two date-time strings
+date_time1 = '2024-09-29 15:30:00'  # Change this date-time as needed
+date_time2 = '2025-10-29 18:45:00'  # Change this date-time as needed
+
+# Calculate the number of days between the two date-times
+number_of_days = days_between_date_times(date_time1, date_time2)
+
+# Print the result
+print(f"Number of days between '{date_time1}' and '{date_time2}': {number_of_days} days")
+
+
+34. Write a Python program to display the date and time in a human-friendly string
+
+Solution
+
+from datetime import datetime
+
+def human_friendly_date_time():
+    # Get the current date and time
+    now = datetime.now()
+
+    # Format the date and time into a human-friendly string
+    friendly_string = now.strftime("Today is %A, %B %d, %Y and the time is %I:%M %p.")
+    
+    return friendly_string
+
+# Get the human-friendly date and time string
+friendly_date_time = human_friendly_date_time()
+
+# Print the result
+print(friendly_date_time)
+
+
+35. Write a Python program to convert a date to a Unix timestamp.
+
+Solution
+from datetime import datetime
+
+def date_to_unix_timestamp(date_str, date_format='%Y-%m-%d %H:%M:%S'):
+    # Convert the date string to a datetime object
+    date_object = datetime.strptime(date_str, date_format)
+    
+    # Get the Unix timestamp from the datetime object
+    unix_timestamp = int(date_object.timestamp())
+    
+    return unix_timestamp
+
+# Specify the date to convert
+date_str = '2024-09-29 15:30:00'  # Change this date as needed
+
+# Convert the date to a Unix timestamp
+unix_timestamp = date_to_unix_timestamp(date_str)
+
+# Print the result
+print(f"Date: {date_str}")
+print(f"Unix Timestamp: {unix_timestamp}")
+
+
+36. Write a Python program to calculate the difference between two dates in seconds.
+
+Solution
+
+from datetime import datetime
+
+def seconds_between_dates(date_str1, date_str2, date_format='%Y-%m-%d %H:%M:%S'):
+    # Convert the string dates to datetime objects
+    date1 = datetime.strptime(date_str1, date_format)
+    date2 = datetime.strptime(date_str2, date_format)
+    
+    # Calculate the difference in seconds
+    difference = abs((date2 - date1).total_seconds())
+    
+    return difference
+
+# Specify the two dates
+date1 = '2024-09-29 15:30:00'  # Change this date as needed
+date2 = '2025-10-29 18:45:00'  # Change this date as needed
+
+# Calculate the difference between the two dates in seconds
+difference_in_seconds = seconds_between_dates(date1, date2)
+
+# Print the result
+print(f"Difference between '{date1}' and '{date2}': {difference_in_seconds} seconds")
+
+
+37. Write a Python program to convert difference of two dates into days, hours, minutes, and seconds.
+
+Solution
+
+from datetime import datetime
+
+def time_difference(date_str1, date_str2, date_format='%Y-%m-%d %H:%M:%S'):
+    # Convert the string dates to datetime objects
+    date1 = datetime.strptime(date_str1, date_format)
+    date2 = datetime.strptime(date_str2, date_format)
+    
+    # Calculate the difference
+    difference = abs(date2 - date1)
+    
+    # Extract days, seconds
+    days = difference.days
+    seconds = difference.seconds
+
+    # Calculate hours, minutes, and seconds
+    hours = seconds // 3600
+    minutes = (seconds % 3600) // 60
+    seconds = seconds % 60
+
+    return days, hours, minutes, seconds
+
+# Specify the two dates
+date1 = '2024-09-29 15:30:00'  # Change this date as needed
+date2 = '2025-10-29 18:45:00'  # Change this date as needed
+
+# Get the difference in days, hours, minutes, and seconds
+days, hours, minutes, seconds = time_difference(date1, date2)
+
+# Print the result
+print(f"Difference between '{date1}' and '{date2}':")
+print(f"{days} days, {hours} hours, {minutes} minutes, {seconds} seconds")
+
+
+38. Write a Python program to get the last modified information of a file.
+
+Solution
+import os
+from datetime import datetime
+
+def get_file_modification_time(file_path):
+    # Check if the file exists
+    if os.path.isfile(file_path):
+        # Get the last modified time in seconds since epoch
+        modified_time = os.path.getmtime(file_path)
+        
+        # Convert to a human-readable format
+        human_readable_time = datetime.fromtimestamp(modified_time).strftime('%Y-%m-%d %H:%M:%S')
+        
+        return human_readable_time
+    else:
+        return "File not found."
+
+# Specify the file path
+file_path = 'example.txt'  # Change this to the path of the file you want to check
+
+# Get the last modified time of the file
+modification_time = get_file_modification_time(file_path)
+
+# Print the result
+print(f"Last modified time of '{file_path}': {modification_time}")
+
+
+39. Write a Python program to calculate an age in years.
+
+Solution
+
+from datetime import datetime
+
+def calculate_age(birth_date_str, date_format='%Y-%m-%d'):
+    # Convert the birth date string to a datetime object
+    birth_date = datetime.strptime(birth_date_str, date_format)
+    
+    # Get the current date
+    current_date = datetime.now()
+    
+    # Calculate the difference in years
+    age = current_date.year - birth_date.year
+    
+    # Adjust the age if the birthday hasn't occurred yet this year
+    if (current_date.month, current_date.day) < (birth_date.month, birth_date.day):
+        age -= 1
+    
+    return age
+
+# Specify the birth date
+birth_date_str = '1990-09-29'  # Change this to the desired birth date
+
+# Calculate the age
+age = calculate_age(birth_date_str)
+
+# Print the result
+print(f"Age: {age} years")
+
+
+40. Write a Python program to get the current date and time information
+
+Solution
+from datetime import datetime
+
+def get_current_date_time():
+    # Get the current date and time
+    now = datetime.now()
+    
+    # Extract various components
+    current_date = now.strftime('%Y-%m-%d')        # Year-Month-Day
+    current_time = now.strftime('%H:%M:%S')        # Hour:Minute:Second
+    current_year = now.year
+    current_month = now.month
+    current_day = now.day
+    current_weekday = now.strftime('%A')            # Full weekday name
+    current_week_number = now.isocalendar()[1]     # ISO calendar week number
+
+    # Create a dictionary to hold the information
+    date_time_info = {
+        'Current Date': current_date,
+        'Current Time': current_time,
+        'Year': current_year,
+        'Month': current_month,
+        'Day': current_day,
+        'Weekday': current_weekday,
+        'Week Number': current_week_number
+    }
+
+    return date_time_info
+
+# Get the current date and time information
+current_info = get_current_date_time()
+
+# Print the result
+for key, value in current_info.items():
+    print(f"{key}: {value}")
+
+
+41. Write a Python program to generate a date and time as a string.
+
+Solution
+
+from datetime import datetime
+
+def generate_date_time_string(date_format='%Y-%m-%d %H:%M:%S'):
+    # Get the current date and time
+    now = datetime.now()
+    
+    # Format the date and time as a string
+    date_time_string = now.strftime(date_format)
+    
+    return date_time_string
+
+# Specify the desired date format (default is 'YYYY-MM-DD HH:MM:SS')
+date_format = '%Y-%m-%d %H:%M:%S'  # Change the format as needed
+
+# Generate the date and time string
+current_date_time_string = generate_date_time_string(date_format)
+
+# Print the result
+print(f"Current Date and Time: {current_date_time_string}")
+
+
+42. Write a Python program to display formatted text output of a month and start the week on
+Sunday.
+
+Solution
+
+import calendar
+
+def display_month(year, month):
+    # Create a TextCalendar instance starting the week on Sunday
+    cal = calendar.TextCalendar(firstweekday=6)  # 6 = Sunday
+    
+    # Format the month as a multi-line string
+    month_str = cal.formatmonth(year, month)
+    
+    return month_str
+
+# Specify the year and month
+year = 2024  # Change this to the desired year
+month = 9    # Change this to the desired month (1-12)
+
+# Get the formatted month output
+formatted_month = display_month(year, month)
+
+# Print the result
+print(formatted_month)
+
+
+43. Write a Python program to print a 3-column calendar for an entire year.
+
+Solution
+
+import calendar
+
+def print_year_calendar(year):
+    # Create a TextCalendar instance
+    cal = calendar.TextCalendar()
+
+    # Print the calendar for each month in 3 columns
+    for month in range(1, 13):
+        # Print the month name and year
+        month_str = cal.formatmonth(year, month)
+        print(month_str, end='')
+
+        # Print a new line every 3 months
+        if month % 3 == 0:
+            print('\n' + '-' * 28)  # Separator line
+
+# Specify the year
+year = 2024  # Change this to the desired year
+
+# Print the 3-column calendar for the specified year
+print_year_calendar(year)
+
+
+44. Write a Python program to display a calendar for a locale.
+
+Solution
+
+import calendar
+import locale
+
+def display_locale_calendar(year, month, locale_str):
+    # Set the locale
+    try:
+        locale.setlocale(locale.LC_TIME, locale_str)
+    except locale.Error:
+        print(f"Locale '{locale_str}' not found.")
+        return
+
+    # Create a TextCalendar instance
+    cal = calendar.TextCalendar()
+
+    # Print the calendar for the specified month
+    month_str = cal.formatmonth(year, month)
+    print(month_str)
+
+# Specify the year, month, and desired locale
+year = 2024   # Change this to the desired year
+month = 9    # Change this to the desired month (1-12)
+locale_str = 'fr_FR.UTF-8'  # Change this to the desired locale (e.g., 'en_US.UTF-8', 'de_DE.UTF-8', etc.)
+
+# Display the calendar for the specified locale
+display_locale_calendar(year, month, locale_str)
+
+
+45. Write a Python program to get the current week.
+
+Solution
+
+from datetime import datetime, timedelta
+
+def get_current_week():
+    # Get today's date
+    today = datetime.now()
+    
+    # Calculate the start of the week (Monday)
+    start_of_week = today - timedelta(days=today.weekday())
+    # Calculate the end of the week (Sunday)
+    end_of_week = start_of_week + timedelta(days=6)
+
+    # Get the week number
+    week_number = today.isocalendar()[1]
+
+    return {
+        'Week Number': week_number,
+        'Start of Week': start_of_week.strftime('%Y-%m-%d'),
+        'End of Week': end_of_week.strftime('%Y-%m-%d')
+    }
+
+# Get the current week information
+current_week_info = get_current_week()
+
+# Print the result
+print("Current Week Information:")
+for key, value in current_week_info.items():
+    print(f"{key}: {value}")
+
+
+46. Write a Python program to create a HTML calendar with data for a specific year and month.
+
+Solution
+
+import calendar
+
+def create_html_calendar(year, month):
+    # Create an HTML calendar
+    html_calendar = f"<html>\n<head>\n<title>Calendar for {calendar.month_name[month]} {year}</title>\n</head>\n<body>\n"
+    html_calendar += f"<h1>Calendar for {calendar.month_name[month]} {year}</h1>\n"
+    html_calendar += "<table border='1' cellpadding='5'>\n"
+    html_calendar += "<tr>\n"
+
+    # Add the day headers
+    days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+    for day in days:
+        html_calendar += f"<th>{day}</th>\n"
+    html_calendar += "</tr>\n<tr>\n"
+
+    # Create a TextCalendar instance
+    cal = calendar.TextCalendar(firstweekday=6)  # Start the week on Sunday
+    month_days = cal.monthdayscalendar(year, month)
+
+    # Fill in the days of the month
+    for week in month_days:
+        for day in week:
+            if day == 0:
+                html_calendar += "<td></td>\n"  # Empty cell for days outside the month
+            else:
+                html_calendar += f"<td>{day}</td>\n"
+        html_calendar += "</tr>\n<tr>\n"  # New week row
+
+    html_calendar += "</tr>\n</table>\n</body>\n</html>"
+
+    # Write the HTML to a file
+    with open(f"calendar_{year}_{month}.html", "w") as f:
+        f.write(html_calendar)
+
+    print(f"HTML calendar for {calendar.month_name[month]} {year} created as 'calendar_{year}_{month}.html'.")
+
+# Specify the year and month
+year = 2024  # Change this to the desired year
+month = 9    # Change this to the desired month (1-12)
+
+# Create the HTML calendar
+create_html_calendar(year, month)
+
+
+47. Write a Python program display a list of the dates for the 2nd Saturday of every month for a
+given year.
+
+Solution
+
+import calendar
+
+def get_second_saturdays(year):
+    second_saturdays = []
+
+    # Loop through each month from 1 to 12
+    for month in range(1, 13):
+        # Create a month calendar
+        month_calendar = calendar.monthcalendar(year, month)
+        # The second Saturday is the second week (index 1) and Saturday (index 5)
+        second_saturday = month_calendar[1][5]
+
+        # If the second Saturday is 0, it means the month does not have a second Saturday
+        if second_saturday == 0:
+            # Check if the first week has a Saturday (which is also the second Saturday in that case)
+            second_saturday = month_calendar[0][5] if month_calendar[0][5] != 0 else month_calendar[2][5]
+
+        # Append the date to the list
+        second_saturdays.append(f"{year}-{month:02d}-{second_saturday:02d}")
+
+    return second_saturdays
+
+# Specify the year
+year = 2024  # Change this to the desired year
+
+# Get the second Saturdays of the specified year
+second_saturdays = get_second_saturdays(year)
+
+# Print the result
+print(f"Second Saturdays of {year}:")
+for date in second_saturdays:
+    print(date)
+
+
+
+48. Write a Python program to display a simple, formatted calendar of a given year and month.
+
+Solution
+
+import calendar
+
+def display_formatted_calendar(year, month):
+    # Create a TextCalendar instance
+    cal = calendar.TextCalendar(firstweekday=6)  # Start the week on Sunday
+
+    # Generate the month's calendar
+    month_calendar = cal.formatmonth(year, month)
+
+    # Print the formatted calendar
+    print(month_calendar)
+
+# Specify the year and month
+year = 2024  # Change this to the desired year
+month = 9    # Change this to the desired month (1-12)
+
+# Display the formatted calendar
+display_formatted_calendar(year, month)
+
+
+49. Write a Python program to convert a string into datetime
+
+Solution
+
+from datetime import datetime
+
+def convert_string_to_datetime(date_string, date_format):
+    # Convert the string to a datetime object
+    try:
+        converted_date = datetime.strptime(date_string, date_format)
+        return converted_date
+    except ValueError as e:
+        print(f"Error: {e}")
+        return None
+
+# Sample string and format
+date_string = "Jul 1 2014 2:43PM"
+date_format = "%b %d %Y %I:%M%p"  # Format for the provided string
+
+# Convert the string to datetime
+result = convert_string_to_datetime(date_string, date_format)
+
+# Display the result
+if result:
+    print("Converted datetime:", result)
+    print("Formatted datetime:", result.strftime('%Y-%m-%d %H:%M:%S'))
+
+
+50. Write a Python program to get a list of dates between two dates
+
+Solution
+
+from datetime import datetime, timedelta
+
+def get_dates_between(start_date, end_date):
+    # Create a list to store the dates
+    date_list = []
+    
+    # Convert strings to datetime objects
+    start = datetime.strptime(start_date, '%Y-%m-%d')
+    end = datetime.strptime(end_date, '%Y-%m-%d')
+    
+    # Generate dates from start to end
+    current_date = start
+    while current_date <= end:
+        date_list.append(current_date.strftime('%Y-%m-%d'))
+        current_date += timedelta(days=1)
+    
+    return date_list
+
+# Specify the start and end dates
+start_date = '2024-09-01'  # Change this to the desired start date
+end_date = '2024-09-10'    # Change this to the desired end date
+
+# Get the list of dates between the specified dates
+dates_between = get_dates_between(start_date, end_date)
+
+# Display the result
+print("Dates between", start_date, "and", end_date, ":")
+for date in dates_between:
+    print(date)
+
+
+51. Write a Python program to generate RFC 3339 timestamp.
+
+Solution
+
+from datetime import datetime, timezone
+
+def generate_rfc3339_timestamp():
+    # Get the current time with UTC timezone
+    current_time = datetime.now(timezone.utc)
+    
+    # Convert it to RFC 3339 format
+    rfc3339_timestamp = current_time.isoformat()
+    
+    return rfc3339_timestamp
+
+# Generate the RFC 3339 timestamp
+timestamp = generate_rfc3339_timestamp()
+
+# Display the result
+print("RFC 3339 Timestamp:", timestamp)
+
+
+52. Write a Python program to get the first and last second.
+
+Solution
+
+from datetime import datetime, timedelta
+
+def get_first_and_last_second():
+    # Get the current date
+    current_date = datetime.now().date()
+    
+    # Calculate the first second of the day (00:00:00)
+    first_second = datetime.combine(current_date, datetime.min.time())
+    
+    # Calculate the last second of the day (23:59:59)
+    last_second = datetime.combine(current_date, datetime.max.time()) - timedelta(seconds=1)
+
+    return first_second, last_second
+
+# Get the first and last second of the day
+first_second, last_second = get_first_and_last_second()
+
+# Display the results
+print("First second of the day:", first_second.strftime('%Y-%m-%d %H:%M:%S'))
+print("Last second of the day:", last_second.strftime('%Y-%m-%d %H:%M:%S'))
+
+
+53. Write a Python program to validate a Gregorian date. The month is between 1 and 12 inclusive,
+the day is within the allowed number of days for the given month. Leap year's are taken into
+consideration. The year is between 1 and 32767 inclusive.
+
+Solution
+
+def is_leap_year(year):
+    """Check if the year is a leap year."""
+    return (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0)
+
+def validate_gregorian_date(year, month, day):
+    """Validate a Gregorian date."""
+    if year < 1 or year > 32767:
+        return False
+    
+    if month < 1 or month > 12:
+        return False
+
+    # Days in each month
+    days_in_month = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    
+    # Check for leap year in February
+    if is_leap_year(year):
+        days_in_month[1] = 29
+
+    if day < 1 or day > days_in_month[month - 1]:
+        return False
+
+    return True
+
+# Example dates to validate
+dates_to_validate = [
+    (2024, 2, 29),  # Valid leap year date
+    (2023, 2, 29),  # Invalid leap year date
+    (2024, 4, 31),  # Invalid day for April
+    (2024, 5, 15),  # Valid date
+    (30000, 1, 1),  # Valid date
+    (40000, 1, 1),  # Invalid year
+]
+
+# Validate each date
+for year, month, day in dates_to_validate:
+    is_valid = validate_gregorian_date(year, month, day)
+    print(f"Date: {year}-{month:02}-{day:02} is {'valid' if is_valid else 'invalid'}.")
+
+
+54. Write a Python program to set the default timezone used by all date/time functions
+
+Solution
+
+from datetime import datetime, timedelta, timezone
+
+# Set the default timezone using a fixed offset
+def set_default_timezone(offset_hours):
+    # Create a timezone with the specified fixed offset in hours
+    return timezone(timedelta(hours=offset_hours))
+
+# Get the current time in the specified timezone
+def get_current_time_in_timezone(tz):
+    current_time = datetime.now(tz)
+    return current_time
+
+# Set your desired timezone offset (e.g., UTC-5 for New York)
+offset_hours = -5  # Change this to your desired offset
+default_timezone = set_default_timezone(offset_hours)
+
+# Get the current time in the specified timezone
+current_time = get_current_time_in_timezone(default_timezone)
+
+# Display the current time
+print(f"Current time with UTC offset {offset_hours}: {current_time.strftime('%Y-%m-%d %H:%M:%S')}")
+
+
+55. The epoch is the point where time starts, and is platform dependent. For Unix, the epoch is
+January 1, 1970, 00:00:00 (UTC). Write a Python program to find out what the epoch is on a given
+platform. Convert a given time in seconds since the epoch.
+Sample Output:
+Epoch on a given platform:
+time.struct_time(tm_year=1970, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=0, tm_sec=0,
+tm_wday=3, tm_yday=1, tm_isdst=0)
+Time in seconds since the epoch:
+time.struct_time(tm_year=1970, tm_mon=1, tm_mday=1, tm_hour=10, tm_min=0, tm_sec=0,
+tm_wday=3, tm_yday=1, tm_isdst=0)
+
+Solution
+
+import time
+
+# Function to get the epoch time
+def get_epoch_time():
+    epoch_time = time.gmtime(0)  # Get the time struct for epoch (0 seconds since epoch)
+    return epoch_time
+
+# Function to convert seconds since epoch to a readable time struct
+def convert_seconds_to_time(seconds):
+    converted_time = time.gmtime(seconds)  # Convert seconds to time struct
+    return converted_time
+
+# Get epoch time
+epoch = get_epoch_time()
+
+# Display epoch time
+print("Epoch on a given platform:")
+print(epoch)
+
+# Example: Convert 36000 seconds (10 hours) since epoch
+seconds_since_epoch = 36000
+converted_time = convert_seconds_to_time(seconds_since_epoch)
+
+# Display converted time
+print("\nTime in seconds since the epoch:")
+print(converted_time)
+
+
+56. Write a Python program to get time values with components using local time and gmtime.
+Sample Output:
+localtime:
+tm_year : 2021
+tm_mon : 4
+tm_mday : 13
+tm_hour : 11
+tm_min : 20
+tm_sec : 37
+tm_wday : 1
+tm_yday : 103
+tm_isdst: 0
+gmtime:
+tm_year : 2021
+tm_mon : 4
+tm_mday : 13
+tm_hour : 11
+tm_min : 20
+tm_sec : 37
+tm_wday : 1
+tm_yday : 103
+tm_isdst: 0
+
+
+Solution
+
+import time
+
+# Function to display time components
+def display_time_components(time_struct, label):
+    print(f"{label}:")
+    print(f"tm_year : {time_struct.tm_year}")
+    print(f"tm_mon : {time_struct.tm_mon}")
+    print(f"tm_mday : {time_struct.tm_mday}")
+    print(f"tm_hour : {time_struct.tm_hour}")
+    print(f"tm_min : {time_struct.tm_min}")
+    print(f"tm_sec : {time_struct.tm_sec}")
+    print(f"tm_wday : {time_struct.tm_wday}")
+    print(f"tm_yday : {time_struct.tm_yday}")
+    print(f"tm_isdst: {time_struct.tm_isdst}")
+    print()  # Print a blank line for better readability
+
+# Get local time
+local_time = time.localtime()  # Get local time as a struct_time
+display_time_components(local_time, "localtime")
+
+# Get GMT time
+gmt_time = time.gmtime()  # Get GMT time as a struct_time
+display_time_components(gmt_time, "gmtime")
+
+
+
+57. Write a Python program to get different time values with components timezone, timezone
+abbreviations, the offset of the local (non-DST) timezone, DST timezone and time of different
+timezones.
+Sample Output:
+Default Zone:
+TZ : (not set)
+Timezone abbreviations: ('UTC', 'UTC')
+Timezone : 0 (0.0)
+DST timezone 0
+Time : 11:30:05 04/13/21 UTC
+Pacific/Auckland :
+TZ : Pacific/Auckland
+Timezone abbreviations: ('NZST', 'NZDT')
+Timezone : -43200 (-12.0)
+DST timezone 1
+Time : 23:30:05 04/13/21 NZST
+Europe/Berlin :
+TZ : Europe/Berlin
+Timezone abbreviations: ('CET', 'CEST')
+Timezone : -3600 (-1.0)
+DST timezone 1
+Time : 13:30:05 04/13/21 CEST
+America/Detroit :
+TZ : America/Detroit
+Timezone abbreviations: ('EST', 'EDT')
+Timezone : 18000 (5.0)
+DST timezone 1
+Time : 07:30:05 04/13/21 EDT
+Singapore :
+TZ : Singapore
+Timezone abbreviations: ('+08', '+08')
+Timezone : -28800 (-8.0)
+DST timezone 0
+Time : 19:30:05 04/13/21 +08
+
+Solution
+
+import pytz
+from datetime import datetime
+
+def display_time_info(timezone_name):
+    # Set the timezone
+    tz = pytz.timezone(timezone_name)
+    
+    # Get the current time in that timezone
+    local_time = datetime.now(tz)
+    
+    # Get the timezone offset and daylight saving time info
+    offset = tz.utcoffset(local_time).total_seconds()
+    is_dst = 1 if tz.dst(local_time) else 0
+    timezone_abbr = tz.tzname(local_time)
+
+    # Display the time information
+    print(f"{timezone_name} :")
+    print(f"TZ : {timezone_name}")
+    print(f"Timezone abbreviations: {timezone_abbr}")
+    print(f"Timezone : {int(offset)} ({offset / 3600:.1f})")
+    print(f"DST timezone {is_dst}")
+    print(f"Time : {local_time.strftime('%H:%M:%S %m/%d/%y')} {timezone_abbr}")
+    print()
+
+# List of time zones to display information for
+timezones = [
+    'UTC',
+    'Pacific/Auckland',
+    'Europe/Berlin',
+    'America/Detroit',
+    'Asia/Singapore'
+]
+
+# Display information for each timezone
+for tz in timezones:
+    display_time_info(tz)
+
+# Display default zone
+print("Default Zone:")
+print(f"TZ : (not set)")
+print(f"Timezone abbreviations: ('UTC', 'UTC')")
+print(f"Timezone : 0 (0.0)")
+print(f"DST timezone 0")
+print(f"Time : {datetime.now(pytz.utc).strftime('%H:%M:%S %m/%d/%y')} UTC")
+
+
+58. Write a Python program that can suspend execution of a given script for a given number of
+seconds.
+Sample Output:
+Sorry, Slept for 3 seconds...
+Sorry, Slept for 3 seconds...
+Sorry, Slept for 3 seconds...
+Sorry, Slept for 3 seconds...
+
+Solution
+
+import time
+
+# Function to suspend execution for a given number of seconds
+def suspend_execution(seconds, repetitions):
+    for _ in range(repetitions):
+        time.sleep(seconds)
+        print(f"Sorry, Slept for {seconds} seconds...")
+
+# Number of seconds to sleep
+sleep_duration = 3
+# Number of times to repeat
+repetitions = 4
+
+# Call the function
+suspend_execution(sleep_duration, repetitions)
+
+
+59. Write a Python program to convert a given time in seconds since the epoch to a string
+representing local time.
+Sample Output:
+Tue Apr 13 11:51:51 2021
+Thu Jun 30 18:36:29 1977
+
+Solution
+
+import time
+from datetime import datetime
+
+def convert_epoch_to_local_time(epoch_time):
+    # Convert epoch time to local time
+    local_time = datetime.fromtimestamp(epoch_time)
+    # Format the time as a string
+    return local_time.strftime('%a %b %d %H:%M:%S %Y')
+
+# Sample epoch times
+epoch_times = [1618324311, 231728637, 1715731589]
+
+# Convert and print local time for each epoch time
+for epoch in epoch_times:
+    local_time_str = convert_epoch_to_local_time(epoch)
+    print(local_time_str)
+
+
+60. Write a Python program that prints the time, names, representation format, and the preferred date
+time format in a simple format.
+Sample Output:
+Simple format of time:
+Tue, 13 Apr 2021 12:02:01 + 1010
+Full names and the representation:
+Tuesday, 04/13/21 April 2021 12:02:01 + 0000
+Preferred date time format:
+Tue Apr 13 12:02:01 2021
+Example 11: 04/13/21, 12:02:01, 21, 2021
+
+Solution
+
+from datetime import datetime
+
+def print_time_formats(current_time):
+    # Simple format of time
+    simple_format = current_time.strftime('%a, %d %b %Y %H:%M:%S + 1010')
+    
+    # Full names and representation format
+    full_names_representation = current_time.strftime('%A, %m/%d/%y %B %Y %H:%M:%S + 0000')
+    
+    # Preferred date-time format
+    preferred_format = current_time.strftime('%a %b %d %H:%M:%S %Y')
+    
+    # Example specific formats
+    example_format = current_time.strftime('%m/%d/%y, %H:%M:%S, %y, %Y')
+    
+    # Print the outputs
+    print("Simple format of time:")
+    print(simple_format)
+    print("Full names and the representation:")
+    print(full_names_representation)
+    print("Preferred date time format:")
+    print(preferred_format)
+    print("Example 11:", example_format)
+
+# Get the current time
+current_time = datetime.now()
+
+# Call the function to print time formats
+print_time_formats(current_time)
+
+
+61. Write a Python program that takes a given number of seconds and passes since the epoch as an
+argument. Print structure time in local time.
+Sample Output:
+Result: time.struct_time(tm_year=1983, tm_mon=2, tm_mday=19, tm_hour=21, tm_min=38,
+tm_sec=18, tm_wday=5, tm_yday=50, tm_isdst=0)
+Year: 1983
+
+Solution
+
+import time
+
+def print_struct_time(seconds_since_epoch):
+    # Convert seconds since epoch to local time struct_time
+    struct_time = time.localtime(seconds_since_epoch)
+    
+    # Print the structured time
+    print("Result:", struct_time)
+    
+    # Print the year
+    print("Year:", struct_time.tm_year)
+
+# Example seconds since epoch (1983-02-19 21:38:18)
+seconds_since_epoch = 418170498  # You can change this to any valid epoch time
+
+# Call the function
+print_struct_time(seconds_since_epoch)
+
+
+62. Write a Python program that takes a tuple containing 9 elements corresponding to structure time
+as an argument and returns a string representing it.
+Sample Output:
+Result: Sun Jan 22 02:34:06 2020
+Result: Tue Nov 12 02:54:08 1982
+
+
+Solution
+
+import time
+
+def format_struct_time(struct_time_tuple):
+    # Convert tuple to struct_time
+    struct_time = time.struct_time(struct_time_tuple)
+    
+    # Format the struct_time to a string
+    formatted_time = time.strftime('%a %b %d %H:%M:%S %Y', struct_time)
+    
+    return formatted_time
+
+# Sample tuples for testing
+struct_time_tuple_1 = (2020, 1, 22, 2, 34, 6, 0, 0, -1)  # Corresponds to Sun Jan 22 02:34:06 2020
+struct_time_tuple_2 = (1982, 11, 12, 2, 54, 8, 0, 0, -1)  # Corresponds to Tue Nov 12 02:54:08 1982
+
+# Call the function and print results
+result_1 = format_struct_time(struct_time_tuple_1)
+result_2 = format_struct_time(struct_time_tuple_2)
+
+print("Result:", result_1)
+print("Result:", result_2)
+
+
+63. Write a Python program to parse a string representing time and return the time structure.
+Sample Output:
+String representing time: 22 January, 2020
+time.struct_time(tm_year=2020, tm_mon=1, tm_mday=22, tm_hour=0, tm_min=0, tm_sec=0,
+tm_wday=2, tm_yday=22, tm_isdst=-1)
+String representing time: 30 Nov 00
+time.struct_time(tm_year=2000, tm_mon=11, tm_mday=30, tm_hour=0, tm_min=0, tm_sec=0,
+tm_wday=3, tm_yday=335, tm_isdst=-1)
+String representing time: 04/11/15 11:55:23
+time.struct_time(tm_year=2015, tm_mon=4, tm_mday=11, tm_hour=11, tm_min=55, tm_sec=23,
+tm_wday=5, tm_yday=101, tm_isdst=-1)
+String representing time: 12-11-2019
+time.struct_time(tm_year=2019, tm_mon=12, tm_mday=11, tm_hour=0, tm_min=0, tm_sec=0,
+tm_wday=2, tm_yday=345, tm_isdst=-1)
+String representing time: 13::55::26
+time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=13, tm_min=55, tm_sec=26,
+tm_wday=0, tm_yday=1, tm_isdst=-1)
+
+Solution
+
+import time
+
+def parse_time_string(time_string):
+    # Define the formats to parse the time string
+    formats = [
+        ("%d %B, %Y", "22 January, 2020"),
+        ("%d %b %y", "30 Nov 00"),
+        ("%m/%d/%y %H:%M:%S", "04/11/15 11:55:23"),
+        ("%d-%m-%Y", "12-11-2019"),
+        ("%H::%M::%S", "13::55::26"),
+    ]
+    
+    for fmt, example in formats:
+        try:
+            # Parse the time string according to the specified format
+            parsed_time = time.strptime(time_string, fmt)
+            return parsed_time
+        except ValueError:
+            continue
+    
+    return None  # Return None if no format matches
+
+# Test cases
+test_strings = [
+    "22 January, 2020",
+    "30 Nov 00",
+    "04/11/15 11:55:23",
+    "12-11-2019",
+    "13::55::26"
+]
+
+# Loop through each test string and print the parsed result
+for test_string in test_strings:
+    result = parse_time_string(test_string)
+    print("String representing time:", test_string)
+    print(result)
+    print()  # Print a new line for better readability

@@ -1,0 +1,575 @@
+Assignment 6
+
+1. Write a Python program to create a decorator that logs the arguments and return value of a
+function.
+
+
+Solution
+
+def log_function_details(func):
+    def wrapper(*args, **kwargs):
+        # Log the function name and arguments
+        print(f"Calling function '{func.__name__}' with arguments: {args} and keyword arguments: {kwargs}")
+        
+        # Call the actual function
+        result = func(*args, **kwargs)
+        
+        # Log the return value
+        print(f"Function '{func.__name__}' returned: {result}")
+        
+        return result
+    return wrapper
+
+# Example usage of the decorator
+@log_function_details
+def add(x, y):
+    """Function to add two numbers."""
+    return x + y
+
+@log_function_details
+def greet(name, greeting="Hello"):
+    """Function to greet a person."""
+    return f"{greeting}, {name}!"
+
+# Test the decorated functions
+add_result = add(3, 5)
+print()  # For better readability in output
+greet_result = greet("Alice")
+print()  # For better readability in output
+greet_result_custom = greet("Bob", greeting="Hi")
+
+
+2. Write a Python program to create a decorator function to measure the execution time of a
+function.
+
+Solution
+
+import time
+
+def timeit(func):
+    """Decorator to measure the execution time of a function."""
+    def wrapper(*args, **kwargs):
+        start_time = time.time()  # Record the start time
+        result = func(*args, **kwargs)  # Call the original function
+        end_time = time.time()  # Record the end time
+        
+        execution_time = end_time - start_time  # Calculate the execution time
+        print(f"Function '{func.__name__}' executed in: {execution_time:.4f} seconds")
+        
+        return result
+    return wrapper
+
+# Example usage of the decorator
+@timeit
+def slow_function(seconds):
+    """Function that sleeps for a given number of seconds."""
+    time.sleep(seconds)
+    return "Function complete!"
+
+@timeit
+def calculate_sum(n):
+    """Function to calculate the sum of the first n numbers."""
+    return sum(range(n + 1))
+
+# Test the decorated functions
+result_slow = slow_function(2)
+print(result_slow)
+print()  # For better readability in output
+result_sum = calculate_sum(1000000)
+print(result_sum)
+
+
+3. Write a Python program to create a decorator to convert the return value of a function to a
+specified data type.
+
+Solution
+
+def convert_to(data_type):
+    """Decorator to convert the return value of a function to a specified data type."""
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            result = func(*args, **kwargs)  # Call the original function
+            return data_type(result)  # Convert the result to the specified data type
+        return wrapper
+    return decorator
+
+# Example usage of the decorator
+@convert_to(int)
+def add(a, b):
+    """Function that adds two numbers and returns a float."""
+    return a + b
+
+@convert_to(str)
+def get_greeting(name):
+    """Function that returns a greeting message."""
+    return f"Hello, {name}!"
+
+@convert_to(float)
+def calculate_area(length, width):
+    """Function that calculates the area of a rectangle."""
+    return length * width
+
+# Test the decorated functions
+result_add = add(5.7, 4.3)
+print(result_add)  # Expected output: 10
+
+result_greeting = get_greeting("Alice")
+print(result_greeting)  # Expected output: 'Hello, Alice!'
+
+result_area = calculate_area(5, 3)
+print(result_area)  # Expected output: 15.0
+
+
+4. Write a Python program that implements a decorator to cache the result of a function.
+
+Solution
+
+def cache(func):
+    """Decorator to cache the results of a function."""
+    cached_results = {}  # Dictionary to store cached results
+
+    def wrapper(*args):
+        if args in cached_results:
+            print(f"Fetching from cache for arguments {args}...")
+            return cached_results[args]  # Return cached result if available
+        
+        print(f"Calculating result for arguments {args}...")
+        result = func(*args)  # Call the original function
+        cached_results[args] = result  # Cache the result
+        return result
+    
+    return wrapper
+
+# Example usage of the decorator
+@cache
+def fibonacci(n):
+    """Function to compute the nth Fibonacci number."""
+    if n <= 1:
+        return n
+    return fibonacci(n - 1) + fibonacci(n - 2)
+
+# Test the decorated function
+print(fibonacci(10))  # First calculation
+print(fibonacci(10))  # Second call, should fetch from cache
+print(fibonacci(5))   # New calculation
+print(fibonacci(5))   # Fetch from cache
+
+
+5. Write a Python program that implements a decorator to validate function arguments based
+on a given condition.
+
+Solution
+
+def validate_args(condition_func):
+    """Decorator to validate function arguments based on a given condition."""
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            # Check if all arguments meet the condition
+            if not all(condition_func(arg) for arg in args):
+                raise ValueError(f"Invalid argument(s): {args}")
+            return func(*args, **kwargs)
+        return wrapper
+    return decorator
+
+# Example condition function
+def is_positive(x):
+    """Condition function to check if a number is positive."""
+    return isinstance(x, (int, float)) and x > 0
+
+# Example usage of the decorator
+@validate_args(is_positive)
+def calculate_area(radius):
+    """Function to calculate the area of a circle."""
+    from math import pi
+    return pi * (radius ** 2)
+
+# Test the decorated function
+try:
+    print(calculate_area(5))   # Valid input
+    print(calculate_area(-3))  # Invalid input, should raise an exception
+except ValueError as e:
+    print(e)
+
+
+6. Write a Python program that implements a decorator to retry a function multiple times in
+case of failure.
+
+Solution
+
+import time
+
+def retry(retries=3, delay=1):
+    """Decorator to retry a function multiple times in case of failure."""
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            for attempt in range(retries):
+                try:
+                    return func(*args, **kwargs)
+                except Exception as e:
+                    if attempt < retries - 1:  # If it's not the last attempt
+                        print(f"Attempt {attempt + 1} failed: {e}. Retrying in {delay} seconds...")
+                        time.sleep(delay)
+                    else:
+                        print(f"Attempt {attempt + 1} failed: {e}. No more retries left.")
+                        raise  # Raise the last exception
+        return wrapper
+    return decorator
+
+# Example usage of the decorator
+@retry(retries=5, delay=2)
+def unreliable_function():
+    """Function that randomly fails to demonstrate the retry mechanism."""
+    import random
+    if random.choice([True, False]):
+        raise ValueError("Simulated failure!")
+    return "Success!"
+
+# Test the decorated function
+try:
+    result = unreliable_function()
+    print(result)
+except ValueError as e:
+    print(f"Final error after retries: {e}")
+
+
+7. Write a Python program that implements a decorator to enforce rate limits on a function.
+
+Solution
+
+import time
+from functools import wraps
+
+def rate_limiter(max_calls, period):
+    """
+    Decorator to enforce a rate limit on a function.
+    
+    :param max_calls: Maximum number of calls allowed within the period.
+    :param period: Time period in seconds for the rate limit.
+    """
+    call_times = []
+
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            nonlocal call_times
+            current_time = time.time()
+            
+            # Remove calls that are outside the time window
+            call_times = [t for t in call_times if t > current_time - period]
+
+            if len(call_times) < max_calls:
+                call_times.append(current_time)
+                return func(*args, **kwargs)
+            else:
+                wait_time = period - (current_time - call_times[0])
+                print(f"Rate limit exceeded. Try again in {wait_time:.2f} seconds.")
+                time.sleep(wait_time)
+                return wrapper(*args, **kwargs)  # Retry after waiting
+            
+        return wrapper
+    return decorator
+
+# Example usage of the decorator
+@rate_limiter(max_calls=5, period=10)
+def limited_function():
+    """Function that can only be called 5 times in a 10-second period."""
+    return "Function executed!"
+
+# Test the decorated function
+if __name__ == "__main__":
+    for i in range(10):
+        result = limited_function()
+        print(result)
+        time.sleep(1)  # Call the function every second
+
+
+
+8. Write a Python program that implements a decorator to add logging functionality to a
+function.
+
+Solution
+
+import logging
+from functools import wraps
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
+def log_function(func):
+    """
+    Decorator to add logging functionality to a function.
+    
+    :param func: The function to be decorated.
+    """
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        # Log the function call with arguments
+        logging.info(f"Calling function '{func.__name__}' with arguments: {args} and keyword arguments: {kwargs}")
+        
+        try:
+            result = func(*args, **kwargs)  # Call the original function
+            # Log the return value
+            logging.info(f"Function '{func.__name__}' returned: {result}")
+            return result
+        except Exception as e:
+            # Log any exceptions raised by the function
+            logging.error(f"Function '{func.__name__}' raised an exception: {e}")
+            raise  # Re-raise the exception for further handling
+    
+    return wrapper
+
+# Example usage of the decorator
+@log_function
+def add(x, y):
+    """Function to add two numbers."""
+    return x + y
+
+@log_function
+def divide(x, y):
+    """Function to divide two numbers."""
+    return x / y
+
+# Test the decorated functions
+if __name__ == "__main__":
+    sum_result = add(5, 3)
+    print(f"Sum: {sum_result}")
+    
+    try:
+        division_result = divide(10, 0)  # This will raise an exception
+        print(f"Division: {division_result}")
+    except ZeroDivisionError:
+        print("Caught a division by zero error.")
+
+
+9. Write a Python program that implements a decorator to handle exceptions raised by a
+function and provide a default response.
+
+Solution
+
+from functools import wraps
+
+def handle_exceptions(default_response=None):
+    """
+    Decorator to handle exceptions raised by a function and provide a default response.
+
+    :param default_response: The response to return in case of an exception.
+    """
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            try:
+                return func(*args, **kwargs)  # Call the original function
+            except Exception as e:
+                # Print the exception for debugging
+                print(f"Exception occurred in function '{func.__name__}': {e}")
+                return default_response  # Return the default response
+        return wrapper
+    return decorator
+
+# Example usage of the decorator
+@handle_exceptions(default_response="Error occurred!")
+def divide(x, y):
+    """Function to divide two numbers."""
+    return x / y
+
+@handle_exceptions(default_response=0)
+def get_item_from_list(lst, index):
+    """Function to get an item from a list by index."""
+    return lst[index]
+
+# Test the decorated functions
+if __name__ == "__main__":
+    # Test division
+    result = divide(10, 2)
+    print(f"Division result: {result}")  # Should print: 5.0
+    
+    result = divide(10, 0)  # This will raise an exception
+    print(f"Division result: {result}")  # Should print: Error occurred!
+
+    # Test list item retrieval
+    sample_list = [1, 2, 3]
+    item = get_item_from_list(sample_list, 1)
+    print(f"Item at index 1: {item}")  # Should print: 2
+
+    item = get_item_from_list(sample_list, 5)  # This will raise an exception
+    print(f"Item at index 5: {item}")  # Should print: 0
+
+
+
+10. Write a Python program that implements a decorator to enforce type checking on the
+arguments of a function.
+
+Solution
+
+from functools import wraps
+from typing import get_type_hints
+
+def enforce_types(func):
+    """
+    Decorator to enforce type checking on the arguments of a function.
+    """
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        # Get the type hints of the function arguments
+        type_hints = get_type_hints(func)
+        
+        # Combine args and kwargs for easier checking
+        combined_args = list(args) + [kwargs[key] for key in kwargs]
+        
+        for arg_name, arg_value in zip(type_hints.keys(), combined_args):
+            expected_type = type_hints[arg_name]
+            if not isinstance(arg_value, expected_type):
+                raise TypeError(f"Argument '{arg_name}' must be of type {expected_type.__name__}, "
+                                f"but got {type(arg_value).__name__}.")
+        return func(*args, **kwargs)
+    
+    return wrapper
+
+# Example usage of the decorator
+@enforce_types
+def add_numbers(a: int, b: int) -> int:
+    """Function to add two numbers."""
+    return a + b
+
+@enforce_types
+def greet(name: str, age: int) -> str:
+    """Function to greet a person."""
+    return f"Hello {name}, you are {age} years old."
+
+# Test the decorated functions
+if __name__ == "__main__":
+    # Test add_numbers with valid types
+    result = add_numbers(5, 10)
+    print(f"Addition result: {result}")  # Should print: 15
+    
+    try:
+        # Test add_numbers with invalid type
+        result = add_numbers(5, "10")  # This will raise a TypeError
+    except TypeError as e:
+        print(e)  # Should indicate the type error for 'b'
+    
+    # Test greet with valid types
+    greeting = greet("Alice", 30)
+    print(greeting)  # Should print: Hello Alice, you are 30 years old.
+    
+    try:
+        # Test greet with invalid type
+        greeting = greet("Alice", "thirty")  # This will raise a TypeError
+    except TypeError as e:
+        print(e)  # Should indicate the type error for 'age'
+
+
+11. Write a Python program that implements a decorator to measure the memory usage of a
+function.
+
+Solution
+
+import tracemalloc
+import time
+from functools import wraps
+
+def measure_memory(func):
+    """
+    Decorator to measure memory usage of a function.
+    """
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        # Start memory tracking
+        tracemalloc.start()
+        
+        # Record the start time
+        start_time = time.time()
+        
+        # Call the function
+        result = func(*args, **kwargs)
+        
+        # Get the current memory usage
+        current, peak = tracemalloc.get_traced_memory()
+        
+        # Stop memory tracking
+        tracemalloc.stop()
+        
+        # Record the end time
+        end_time = time.time()
+        
+        # Print memory usage and execution time
+        print(f"Function '{func.__name__}' executed in {end_time - start_time:.4f} seconds")
+        print(f"Current memory usage: {current / 1024:.2f} KB; Peak memory usage: {peak / 1024:.2f} KB")
+        
+        return result
+    
+    return wrapper
+
+# Example usage of the decorator
+@measure_memory
+def create_large_list(size):
+    """Function to create a large list."""
+    return [i for i in range(size)]
+
+@measure_memory
+def concatenate_strings(n):
+    """Function to concatenate a large number of strings."""
+    return ''.join(str(i) for i in range(n))
+
+# Test the decorated functions
+if __name__ == "__main__":
+    # Test create_large_list
+    large_list = create_large_list(10**6)  # Create a list of 1,000,000 integers
+    
+    # Test concatenate_strings
+    long_string = concatenate_strings(100000)  # Concatenate 100,000 strings
+
+
+12. Write a Python program that implements a decorator to provide caching with expiration
+time for a function.
+
+Solution
+
+import time
+from functools import wraps
+
+def cache_with_expiration(expiration_time):
+    """
+    Decorator to cache function results with an expiration time.
+    """
+    def decorator(func):
+        cache = {}
+
+        @wraps(func)
+        def wrapper(*args):
+            current_time = time.time()
+            # If the function call is cached
+            if args in cache:
+                result, timestamp = cache[args]
+                # Check if the cache is still valid
+                if current_time - timestamp < expiration_time:
+                    print("Returning cached result for:", args)
+                    return result
+                else:
+                    print("Cache expired for:", args)
+            else:
+                print("No cache found for:", args)
+
+            # Call the function and cache the result
+            result = func(*args)
+            cache[args] = (result, current_time)  # Store result with the current timestamp
+            return result
+        
+        return wrapper
+    
+    return decorator
+
+# Example usage of the decorator
+@cache_with_expiration(expiration_time=5)  # Cache expiration time of 5 seconds
+def compute_square(n):
+    """Function to compute the square of a number."""
+    print(f"Computing square for: {n}")
+    return n * n
+
+# Test the decorated function
+if __name__ == "__main__":
+    print(compute_square(4))  # First call, should compute and cache the result
+    time.sleep(2)             # Wait for 2 seconds
+    print(compute_square(4))  # Second call, should return the cached result
+    time.sleep(4)             # Wait for 4 seconds (total of 6 seconds since first call)
+    print(compute_square(4))  # Third call, should compute again since cache expired
